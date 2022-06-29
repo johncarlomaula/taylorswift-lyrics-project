@@ -102,7 +102,7 @@ wordcloud(words = word.count$word,
           colors = brewer.pal(8, "Dark2"))
 ```
 
-![](swift_words_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](images/swift_words_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 The words **“love”**, **“time”**, and **“baby”** are some of the most
 frequenct words in Taylor’s music, as seen by the large size of the
@@ -131,7 +131,7 @@ ggplot(data = word.count[1:15,], aes(x = reorder(word, -n), y = n)) +
     theme(axis.text=element_text(size=12), axis.title=element_text(size=12), axis.text.x = element_text(angle = 45))
 ```
 
-![](swift_words_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](images/swift_words_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 # View the top 5 most common words
@@ -201,7 +201,7 @@ diversity_plot <- lex_diversity %>%
 diversity_plot
 ```
 
-![](swift_words_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](images/swift_words_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 # View highest and lowest lexical diversity values
@@ -275,7 +275,7 @@ for (i in 1:9) {
 }
 ```
 
-<img src="swift_words_files/figure-gfm/unnamed-chunk-12-1.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-2.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-3.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-4.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-5.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-6.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-7.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-8.png" width="33%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-9.png" width="33%" />
+<img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-1.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-2.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-3.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-4.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-5.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-6.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-7.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-8.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-9.png" width="33%" />
 
 The first thing I noticed is that the word clouds for *1989* and
 *folklore* are smaller compared to the rest. This may be due to the fact
@@ -324,7 +324,7 @@ for (i in 1:9) {
 }
 ```
 
-<img src="swift_words_files/figure-gfm/unnamed-chunk-14-1.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-2.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-3.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-4.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-5.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-6.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-7.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-8.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-9.png" width="50%" />
+<img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-1.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-2.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-3.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-4.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-5.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-6.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-7.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-8.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-9.png" width="50%" />
 
 When excluding meaningless words such as “ooh”, “la”, etc., the most
 common words in each album are:
@@ -397,7 +397,7 @@ for (i in 1:9) {
 }
 ```
 
-<img src="swift_words_files/figure-gfm/unnamed-chunk-16-1.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-2.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-3.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-4.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-5.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-6.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-7.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-8.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-9.png" width="50%" />
+<img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-1.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-2.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-3.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-4.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-5.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-6.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-7.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-8.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-9.png" width="50%" />
 
 The words with the highest TF-IDF value for *Speak Now* (**“grow”**),
 *Red* (**“trouble”**), and *Lover* (**“daylight”**) capture the themes
