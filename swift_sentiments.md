@@ -10,6 +10,13 @@ can be accessed [here](https://www.tidytextmining.com/sentiment.html). I
 will be using three different lexicons, **Bing**, **NRC**, and
 **AFINN**, to analyze the sentiment of Taylor’s music.
 
+**Key Findings**:
+- The Bing lexicon showed that her lyrics convey a more positive sentiment with words such as "like", "love", and "right" occuring frequently.
+- Words that contributed most to the negative sentiment of her lyrics are "bad", "shake", and "break".
+- The AFINN lexicon also showed that her lyrics convey a more positive sentiment with a positive mean AFINN value of 0.395.
+- Both *folklore* and *evermore* have a negative mean AFINN value of -0.052 and -0.043, respectively, while *Red* had the highest mean AFINN value of 0.632.
+- According to the NRC lexicon, the most common emotions conveyed by her lyrics are positive, negative, joy, and anticipation while the least common is disgust. This is generally consistent throughout her albums with some minor differences.
+
 ### 1.1 Loading Packages
 
 These are the packages I used for this section of the project.
