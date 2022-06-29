@@ -10,6 +10,12 @@ music. Finally, I calculated the **Term Frequency - Inverse Document
 Frequency**, or **TF-IDF**, to determine any key words in her lyrics
 that could describe the themes of her albums.
 
+**Key Findings**:
+- The most common words that Taylor Swift uses in her lyrics are "love", "time", and "baby". Musical sound effects such as "ooh" and "la" are also very common. "Time" is the most common word in 4 of her albums.
+- Words are repeated much more often in her poppier albums, *Red*, *1989*, *reputation*, and *Lover*.
+- There is un upward trend in lexical diversity with her first 3 albums. This started to decrease when she began transitioning to pop music with her 4th album, *Red*. Starting with *reputation*, there has been an upward trend in lexical diversity.
+- The words "grow", "trouble", and "daylight" describe the themes of the albums *Speak Now*, *Red*, and *Lover* the best based on their TF-IDF values.
+
 ### 1.1 Loading Packages
 
 These are the packages I used for this section of the project.
