@@ -1,0 +1,171 @@
+---
+title: "Retrieving the Data"
+output: rmarkdown::github_document
+author: John Carlo Maula
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Introduction
+
+This section focuses on retrieving the lyrics to Taylor Swift's albums using the genius package, which can be accessed [here](https://github.com/JosiahParry/genius). I will also be cleaning the data by removing duplicates, filling in missing values, and addressing contractions and special characters in the lyrics. Finally, I will store the dataset into a .csv file to be used in the analyses section.
+
+**Note: Due to problems with the genius package, the resulting dataset from this section contains incomplete lyrics.**
+
+### 1.1 Loading Packages
+
+These are the packages I used for this section of the project.
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Load required libraries
+library(genius)
+library(tidyverse)
+```
+
+### 1.2 Retrieving Lyrics
+
+I used the genius library to pull the lyrics from Genius. I chose deluxe editions of albums where it is applicable to include any bonus tracks.
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Create a tribble of inputs for each album
+artist_albums <- tribble(
+  ~artist, ~album,
+  "Taylor Swift", "Taylor Swift",
+  "Taylor Swift", "Fearless (Taylor's Version)",
+  "Taylor Swift", "Speak Now (Deluxe)",
+  "Taylor Swift", "Red (Deluxe Edition)",
+  "Taylor Swift", "1989 (Deluxe)",
+  "Taylor Swift", "reputation",
+  "Taylor Swift", "Lover",
+  "Taylor Swift", "folklore (deluxe version)",
+  "Taylor Swift", "evermore (deluxe version)"
+)
+
+# Retrieve the lyrics for each album using the genius package
+lyrics <- artist_albums %>% add_genius(artist, album, type = "album")
+```
+
+
+## 2. Data Cleaning
+
+### 2.1 Examining the Data
+
+After retrieving the lyrics from Genius, I viewed the data and its structure to determine any necessary cleaning. There are 6 columns and 3,552 rows. The column names are:
+
+1. **artist** - artist of the song
+2. **album** - album containing the song
+3. **track_n** - track number of the song in the album
+4. **line** - line number of the lyric in the song
+5. **lyric** - lyric of the song
+6. **track_title** - name of the song
+
+**Note: Due to an issue with the genius package, the resulting lyrics are incomplete.**
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# View data
+head(lyrics)
+
+# Check structure of the data
+str(lyrics)
+```
+
+### 2.2 Missing Values
+
+There are two songs with missing values. It appears that the first lines of the song were mistaken as the second line, resulting in missing values for the first line. I removed these rows and corrected the line numbering. 
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Check missing values
+lyrics[!complete.cases(lyrics), ]
+```
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Check lyrics of tracks with the missing values
+lyrics[lyrics$track_title == "I Knew You Were Trouble.", ]
+lyrics[lyrics$track_title == "I Know Places", ]
+```
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Remove rows with NA values
+lyrics <- lyrics[complete.cases(lyrics), ]
+
+# Fix line numbers for affected songs
+lyrics[lyrics$track_title == "I Knew You Were Trouble.", ]$line <- lyrics[lyrics$track_title == "I Knew You Were Trouble.", ]$line - 1
+lyrics[lyrics$track_title == "I Know Places", ]$line <- lyrics[lyrics$track_title == "I Know Places", ]$line - 1
+```
+
+### 2.3 Duplicated Lyrics
+
+I looked at the list of every song in the dataset and verified the tracklisting. Then, I removed the extra versions of songs that are already in the album (e.g., *Teardrops on My Guitar (Pop Version)*).
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Check list of tracks included in the dataset
+unique(as.factor(lyrics$track_title))
+```
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Remove extra tracks
+lyrics <- lyrics[(lyrics$track_title != "Teardrops on My Guitar (Pop Version)") &
+                   (lyrics$track_title != "Forever & Always (Piano Version) [Taylor's Version]") &
+                   (lyrics$track_title != "Love Story (Taylor's Version) [Elvira Remix]") &
+                   (lyrics$track_title != "Treacherous (Original Demo Recording)") &
+                   (lyrics$track_title != "Red (Original Demo Recording)") &
+                   (lyrics$track_title != "State of Grace (Acoustic Version)") &
+                   (lyrics$track_title != "I Know Places (Voice Memo)") &
+                   (lyrics$track_title != "I Wish You Would (Voice Memo)") &
+                   (lyrics$track_title != "Blank Space (Voice Memo)"), ]
+
+```
+
+### 2.4 Addressing Contractions and Special Characters
+
+Using a [tutorial](https://www.datacamp.com/community/tutorials/R-nlp-machine-learning) from DataCamp, I defined a function that will fix contractions and remove special characters. Then, I applied these functions to the dataset and stored it into a csv file.
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Check list of album titles
+unique(lyrics$album) 
+
+# Simplify album titles
+lyrics$album <- gsub(" \\(Deluxe\\)", "", lyrics$album)
+lyrics$album <- gsub(" \\(Deluxe Edition\\)", "", lyrics$album)
+lyrics$album <- gsub(" \\(deluxe version\\)", "", lyrics$album)
+```
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Define function to fix contractions
+fix.contractions <- function(doc) {
+  # "won't" is a special case as it does not expand to "wo not"
+  doc <- gsub("won't", "will not", doc)
+  doc <- gsub("can't", "can not", doc)
+  doc <- gsub("n't", " not", doc)
+  doc <- gsub("'ll", " will", doc)
+  doc <- gsub("'re", " are", doc)
+  doc <- gsub("'ve", " have", doc)
+  doc <- gsub("'m", " am", doc)
+  doc <- gsub("'d", " would", doc)
+  # 's could be 'is' or could be possessive: it has no expansion
+  doc <- gsub("'s", "", doc)
+  return(doc)
+}
+
+# Define function to remove special characters
+remove.special.chars <- function(x) gsub("[^a-zA-Z0-9 ]", " ", x)
+```
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Apply functions to dataset
+lyrics$lyric <- sapply(lyrics$lyric, tolower)
+lyrics$lyric <- sapply(lyrics$lyric, fix.contractions)
+lyrics$lyric <- sapply(lyrics$lyric, remove.special.chars)
+```
+
+Before storing the dataset into a csv file, I took one final look at the dataframe.
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Preview the data and its structure
+head(lyrics)
+
+# Export dataset into a csv file
+write.csv(lyrics, "data/swiftLyrics.csv")
+```
