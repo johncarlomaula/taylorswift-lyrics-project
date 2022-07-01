@@ -431,9 +431,9 @@ alternative albums. The words **“grow”**, **“trouble”**, and
 **“daylight”** describe the themes of the albums *Speak Now*, *Red*, and
 *Lover*, respectively, based on their TF-IDF values.
 
-When it comes lexical diversity, her vocabulary began to vary more since
+When it comes to lexical diversity, her vocabulary began to vary more since
 her first album in 2006 but decreased when she transitioned into pop
-music. Since her 6th album, *reputation* in 2017, there has been an
+music. Since her 6th album, *reputation* (2017), there has been an
 upward trend in lexical diversity.
 
 Time of the day was a common theme in Swift’s lyrics, with words such as
