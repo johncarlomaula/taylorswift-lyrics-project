@@ -13,6 +13,14 @@ will be using three different lexicons, **Bing**, **NRC**, and
 **Notes:** Updated on 02/09/2023 to include Taylor’s new album,
 *Midnights*
 
+**Key Findings**:
+- The Bing lexicon showed that her lyrics convey a more positive sentiment with words such as "like", "love", and "right" occurring frequently.
+- Words that contributed most to the negative sentiment of her lyrics are "bad", "break", and "shake".
+- The AFINN lexicon also showed that her lyrics convey a more positive sentiment with a positive mean AFINN value of 0.376.
+- Both *folklore* and *evermore* have a negative mean AFINN value of -0.052 and -0.043, respectively, while *Red* had the highest mean AFINN value of 0.632.
+- According to the NRC lexicon, the most common emotions conveyed by her lyrics are positive, negative, joy, and anticipation while the least common is disgust. This is generally consistent throughout her albums with some minor differences.
+
+
 ### 1.1 Loading Packages
 
 These are the packages I used for this section of the project.
@@ -141,7 +149,7 @@ p2 <- ggplot(neg.counts, aes(reorder(word, n), n)) +
 grid.arrange(p1, p2, ncol=2)
 ```
 
-![](swift_sentiments_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](images/swift_sentiments_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 According to the bing lexicon, words that contribute most to the
 positive sentiment of Taylor Swift’s lyrics are **“like”**, **“love”**,
@@ -197,7 +205,7 @@ ggplot(words_afinn, aes(value)) +
   theme_classic()
 ```
 
-![](swift_sentiments_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](images/swift_sentiments_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Unsurprisingly, there are a lot more words with positive AFINN values in
 Taylor’s lyrics than words with negative values with a mean AFINN value
@@ -217,7 +225,7 @@ for (i in 1:10) {
 }
 ```
 
-<img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-1.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-2.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-3.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-4.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-5.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-6.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-7.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-8.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-9.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-10.png" width="50%" />
+<img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-1.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-2.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-3.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-4.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-5.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-6.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-7.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-8.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-9.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-9-10.png" width="50%" />
 
 When it comes to individual albums, both *folklore* and *evermore* have
 more words with negative AFINN values with mean values of -0.052 and
@@ -283,7 +291,7 @@ ggplot(nrc_word_counts, aes(reorder(sentiment, -n), n)) +
   theme(axis.text=element_text(size=12), axis.title=element_text(size=12), axis.text.x = element_text(angle = 30))
 ```
 
-![](swift_sentiments_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](images/swift_sentiments_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 According to the NRC lexicon, the most common emotions conveyed by
 Taylor’s lyrics are **positive**, **negative**, and **joy**. The least
@@ -309,7 +317,7 @@ for (i in 1:10) {
 }
 ```
 
-<img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-1.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-2.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-3.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-4.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-5.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-6.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-7.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-8.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-9.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-10.png" width="50%" />
+<img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-1.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-2.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-3.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-4.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-5.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-6.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-7.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-8.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-9.png" width="50%" /><img src="images/swift_sentiments_files/figure-gfm/unnamed-chunk-13-10.png" width="50%" />
 
 When it comes to individual albums, the most common and least common
 emotions are generally consistent. There are, however, some slight
