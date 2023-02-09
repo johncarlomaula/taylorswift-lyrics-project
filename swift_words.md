@@ -10,11 +10,8 @@ music. Finally, I calculated the **Term Frequency - Inverse Document
 Frequency**, or **TF-IDF**, to determine any key words in her lyrics
 that could describe the themes of her albums.
 
-**Key Findings**:
-- The most common words that Taylor Swift uses in her lyrics are "love", "time", and "baby". Musical sound effects such as "ooh" and "la" are also very common. "Time" is the most common word in 4 of her albums.
-- Words are repeated much more often in her poppier albums, *Red*, *1989*, *reputation*, and *Lover*.
-- There is un upward trend in lexical diversity with her first 3 albums. This started to decrease when she began transitioning to pop music with her 4th album, *Red*. Starting with *reputation*, there has been an upward trend in lexical diversity.
-- The words "grow", "trouble", and "daylight" describe the themes of the albums *Speak Now*, *Red*, and *Lover* the best based on their TF-IDF values.
+**NOTE:** Updated on 02/09/2023 to include Taylor’s new album,
+*Midnights*.
 
 ### 1.1 Loading Packages
 
@@ -67,13 +64,13 @@ visualizations.
 
 ``` r
 # Create a vector of the album titles
-album.list <- factor(c("Taylor Swift", "Fearless", "Speak Now", "Red", "1989", "reputation", "Lover", "folklore", "evermore"))
+album.list <- factor(c("Taylor Swift", "Fearless", "Speak Now", "Red", "1989", "reputation", "Lover", "folklore", "evermore", "Midnights"))
 
 # Create a vector of color palettes associated with each album aesthetic
-palette = c("GnBu", "YlOrBr", "Purples", "Reds", "YlGnBu", "Greens", "RdPu", "Greys", "OrRd")
+palette = c("GnBu", "YlOrBr", "Purples", "Reds", "YlGnBu", "Greens", "RdPu", "Greys", "OrRd", "BuGn")
 
 # Create a vector of color codes associated with each album aesthetic
-colors = c("#366E84", "#D9C78F", "#462245", "#A02B48", "#CDC6AC", "#333333", "#CC6B96", "#BABABA", "#67230E")
+colors = c("#366E84", "#D9C78F", "#462245", "#A02B48", "#CDC6AC", "#333333", "#CC6B96", "#BABABA", "#67230E", "#154E52")
 ```
 
 ## 2. Lyrics Exploration
@@ -108,23 +105,22 @@ wordcloud(words = word.count$word,
           colors = brewer.pal(8, "Dark2"))
 ```
 
-![](images/swift_words_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](swift_words_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
-The words **“love”**, **“time”**, and **“baby”** are some of the most
-frequenct words in Taylor’s music, as seen by the large size of the
-these words in the word cloud. Most of her music are about love and
+The words **“love”**, **“time”**, **“yeah”**, and **“baby”** are some of
+the most frequent words in Taylor’s music, as seen by the large size of
+the these words in the word cloud. Most of her music are about love and
 relationships, so it’s no surprise that these words appear in her lyrics
-quite frequently.
+the most.
 
 The word **“ooh”** is also frequent in her lyrics, but this word is
-commonly used as a musical effect and doesn’t really mean anything
-significant in the English language.
+commonly used as a musical effect.
 
 ### 2.2 Word Frequency Plot
 
 For a more informative visual, I plotted the top 15 most frequent words.
-The word **“love”** appears 233 times, followed by **“time”** which
-appears 203 times.
+The word **“love”** appears 251 times, followed by **“time”** which
+appears 226 times.
 
 ``` r
 # Bar plot of word counts
@@ -137,7 +133,7 @@ ggplot(data = word.count[1:15,], aes(x = reorder(word, -n), y = n)) +
     theme(axis.text=element_text(size=12), axis.title=element_text(size=12), axis.text.x = element_text(angle = 45))
 ```
 
-![](images/swift_words_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](swift_words_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ``` r
 # View the top 5 most common words
@@ -145,11 +141,11 @@ word.count[1:5, ]
 ```
 
     ##   word   n
-    ## 1 love 233
-    ## 2 time 203
-    ## 3  ooh 195
-    ## 4 baby 131
-    ## 5 yeah 130
+    ## 1 love 251
+    ## 2 time 226
+    ## 3  ooh 202
+    ## 4 yeah 151
+    ## 5 baby 134
 
 ### 2.3 Lexical Diversity
 
@@ -160,25 +156,27 @@ years. Using a
 from *DataCamp*, I was able to plot the lexical diversity of Taylor’s
 music over time.
 
-However, I first need to add the release dates of her albums in a new
-column called **release_date**.
+First, I need to add the release dates of her albums in a new column
+called **release_date**.
 
 ``` r
 # Create a vector of release dates
 dates <- c("2006-10-24", "2008-11-11", "2010-10-25", "2012-10-22", "2014-10-27",
-                   "2017-11-10", "2019-08-23", "2020-07-24", "2020-12-11")
+           "2017-11-10", "2019-08-23", "2020-07-24", "2020-12-11", "2022-10-21")
 
 # Create empty release_date column
 df$release_date <- NA
 
 # Iterate through the dataframe to add the release date to the corresponding album 
-for (i in 1:9) {
+for (i in 1:10) {
   df[df$Album == album.list[i], "release_date"] = dates[i]
 }
 
 # Change release date to a Date type
 df$release_date <- as.Date(df$release_date)
 ```
+
+Next, I followed the tutorial to plot the lexical diversity graph.
 
 ``` r
 # Obtain lexical diversity
@@ -207,28 +205,36 @@ diversity_plot <- lex_diversity %>%
 diversity_plot
 ```
 
-![](images/swift_words_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](swift_words_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 # View highest and lowest lexical diversity values
-head(lex_diversity, 1)
+head(lex_diversity, 5)
 ```
 
-    ## # A tibble: 1 × 3
-    ## # Groups:   release_date [1]
-    ##   release_date Song         lex_diversity
-    ##   <date>       <fct>                <int>
-    ## 1 2012-10-22   All Too Well           199
+    ## # A tibble: 5 × 3
+    ## # Groups:   release_date [5]
+    ##   release_date Song           lex_diversity
+    ##   <date>       <chr>                  <int>
+    ## 1 2012-10-22   All Too Well             199
+    ## 2 2017-11-10   End Game                 196
+    ## 3 2014-10-27   Blank Space              180
+    ## 4 2022-10-21   Hits Different           177
+    ## 5 2020-12-11   ​happiness                170
 
 ``` r
-tail(lex_diversity, 1)
+tail(lex_diversity, 5)
 ```
 
-    ## # A tibble: 1 × 3
-    ## # Groups:   release_date [1]
+    ## # A tibble: 5 × 3
+    ## # Groups:   release_date [3]
     ##   release_date Song                   lex_diversity
-    ##   <date>       <fct>                          <int>
-    ## 1 2006-10-24   A Perfectly Good Heart            66
+    ##   <date>       <chr>                          <int>
+    ## 1 2006-10-24   A Place In This World             80
+    ## 2 2006-10-24   Invisible                         78
+    ## 3 2022-10-21   Labyrinth                         75
+    ## 4 2020-07-24   ​epiphany                          71
+    ## 5 2006-10-24   A Perfectly Good Heart            66
 
 As shown by the plot, Taylor’s lyrical diversity has increased since her
 first album in 2006. However, there was a decrease in lexical diversity
@@ -240,6 +246,10 @@ Her most lyrically diverse song is *All Too Well* with 199 unique words,
 while her least lyrically diverse song is *A Perfectly Good Heart* with
 66 unique words. Many critics and fans consider *All Too Well* to be
 Taylor’s best song due to its storytelling.
+
+Although not included here, *All Too Well (10 Minute Version)* from
+Taylor’s re-recording of *Red* contains the original lyrics plus a few
+extra verses, which would make it her most lyrically diverse song.
 
 ## 3. Lyrics Exploration by Album
 
@@ -276,12 +286,12 @@ get.word.cloud <- function(df, palette) {
 
 ``` r
 # Apply function for each album
-for (i in 1:9) {
+for (i in 1:10) {
   get.word.cloud(df[df$Album == album.list[i],], palette[i])
 }
 ```
 
-<img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-1.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-2.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-3.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-4.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-5.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-6.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-7.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-8.png" width="33%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-12-9.png" width="33%" />
+<img src="swift_words_files/figure-gfm/unnamed-chunk-12-1.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-2.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-3.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-4.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-5.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-6.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-7.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-8.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-9.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-12-10.png" width="50%" />
 
 The first thing I noticed is that the word clouds for *1989* and
 *folklore* are smaller compared to the rest. This may be due to the fact
@@ -291,8 +301,8 @@ the words in the album.
 For *Fearless*, *Red*, *reputation*, *Lover*, and *evermore*, the most
 common words are either **“la”**, **“ooh”**, or **“di”**, which are
 musical effects rather than actual words. Her self-titled album appears
-to have the least amount of these words. Both *Speak Now* and *folklore*
-have **“time”** as the most frequent word.
+to have the least amount of these words. Both *Speak Now*, *folklore*,
+and *Midnights* have **“time”** as the most frequent word.
 
 ### 3.2 Word Frequency by Album
 
@@ -325,29 +335,30 @@ get.bar.plot <- function(df, color) {
 
 ``` r
 # Apply bar plot function to each album
-for (i in 1:9) {
+for (i in 1:10) {
   get.bar.plot(df[df$Album == album.list[i],], colors[i])
 }
 ```
 
-<img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-1.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-2.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-3.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-4.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-5.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-6.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-7.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-8.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-14-9.png" width="50%" />
+<img src="swift_words_files/figure-gfm/unnamed-chunk-14-1.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-2.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-3.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-4.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-5.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-6.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-7.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-8.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-9.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-14-10.png" width="50%" />
 
 When excluding meaningless words such as “ooh”, “la”, etc., the most
 common words in each album are:
 
-1.  *Taylor Swift* - “wanna”, “beautiful”, “baby”
-2.  *Fearless* - “time”, “baby”, “fall”
-3.  *Speak Now* - “time”, “love”, “grow”
-4.  *Red* - “time”, “stay”, “yeah”
-5.  *1989* - “love”, “shake”, “baby”
-6.  *reputation* - “baby”, “wanna”, “time”
-7.  *Lover* - “daylight”, “love”, “wanna”
-8.  *folklore* - “time”, “love”, “call”
-9.  *evermore* - “left”, “time”, “love”
+1.  ***Taylor Swift*** - “wanna”, “beautiful”, “baby”
+2.  ***Fearless*** - “time”, “baby”, “fall”
+3.  ***Speak Now*** - “time”, “love”, “grow”
+4.  ***Red*** - “time”, “stay”, “yeah”
+5.  ***1989*** - “love”, “shake”, “baby”
+6.  ***reputation*** - “baby”, “wanna”, “time”
+7.  ***Lover*** - “daylight”, “love”, “wanna”
+8.  ***folklore*** - “time”, “love”, “call”
+9.  ***evermore*** - “left”, “time”, “love”
+10. ***Midnights*** - “time”, “yeah”, “karma”
 
-Word such as **“time”**, **“love”**, and **“baby”** appear frequently in
-all her albums. Interestingly enough, **“time”** is the most frequent
-word in 4 of her albums, but **“love”** is more frequent when it comes
+Words such as **“time”**, **“love”**, and **“baby”** appear frequently
+in all her albums. Interestingly enough, **“time”** is the most frequent
+word in 5 of her albums, but **“love”** is more frequent when it comes
 to her overall lyrics, as seen by the word cloud in section 2.1.
 
 The repetition of words are highest with *1989*, *Red*, *reputation*,
@@ -355,14 +366,18 @@ and *Lover* (her pop albums) with words counts from the 50s to the 80s.
 It is lowest with her self-titled album, where the most frequent word
 occurs less than 20 times.
 
-Some of the words are hevily influenced by a single song such as
-**“stay”** with *Stay Stay Stay* and **“shake”** with *Shake It Off*.
+Some of the words are heavily influenced by a single song such as
+**“stay”** in *Stay Stay Stay*, **“shake”** in *Shake It Off*, and
+**“karma”** in *Karma*.
+
+*Midnights* is the only album to have a curse word in the top 15 most
+common words.
 
 ### 3.3 TF-IDF
 
 Since the most frequent words in each of her albums are not that much
 different from each other, I wanted to see if there is a word that can
-decribe a particular album the most within the lyrics of that album. By
+describe a particular album the most within the lyrics of that album. By
 calculating the **TF-IDF**, I can see the importance of the words and
 assign a key word for each album.
 
@@ -390,38 +405,40 @@ head(tf.idf)
 top.tf.idf <- tf.idf %>% group_by(Album) %>% top_n(5, tf_idf)
 
 # Plot the top 5 highest TF-IDF values per album
-for (i in 1:9) {
+for (i in 1:10) {
   p <- ggplot(top.tf.idf[top.tf.idf$Album == album.list[i], ], 
-         aes(x = reorder(word, -tf_idf), y = tf_idf)) + 
-  geom_bar(stat = "identity", fill = colors[i]) + 
-  xlab("Word") + 
-  ylab("TF-IDF") +
-  ggtitle(album.list[i]) +
-  theme_classic()
+    aes(x = reorder(word, -tf_idf), y = tf_idf)) + 
+    geom_bar(stat = "identity", fill = colors[i]) + 
+    xlab("Word") + 
+    ylab("TF-IDF") +
+    ggtitle(album.list[i]) +
+    theme_classic() + 
+    geom_text(aes(label = round(tf_idf, 3)), vjust = 1.5, color = "white")
   
   print(p)
 }
 ```
 
-<img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-1.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-2.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-3.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-4.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-5.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-6.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-7.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-8.png" width="50%" /><img src="images/swift_words_files/figure-gfm/unnamed-chunk-16-9.png" width="50%" />
+<img src="swift_words_files/figure-gfm/unnamed-chunk-16-1.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-2.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-3.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-4.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-5.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-6.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-7.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-8.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-9.png" width="50%" /><img src="swift_words_files/figure-gfm/unnamed-chunk-16-10.png" width="50%" />
 
-The words with the highest TF-IDF value for *Speak Now* (**“grow”**),
-*Red* (**“trouble”**), and *Lover* (**“daylight”**) capture the themes
-of their corresponding album the most. For words within the top 5,
-**“princess”** and **“getaway”** captures the themes of *Fearless* and
-*reputation*, respectively.
+Overall, TF-IDF values for the words are very low, with the maximum
+being 0.019. The words with the highest TF-IDF value for *Speak Now*
+(**“grow”**), *Red* (**“trouble”**), and *Lover* (**“daylight”**)
+capture the themes of their corresponding album the most. For words
+within the top 5, **“princess”** and **“getaway”** captures the themes
+of *Fearless* and *reputation*, respectively.
 
 In my opinion, none of the words within the top 5 highest TF-IDF score
-can sufficiently decribe the themes of her albums *Taylor Swift*,
-*1989*, *folklore*, and *evermore*.
+can sufficiently describe the themes of her albums *Taylor Swift*,
+*1989*, *folklore*, *evermore*, and *Midnights*.
 
 ## 4. Conclusion
 
 This section focused on analyzing the word frequencies of Taylor Swift’s
 lyrics. Some of the most common words she uses in her lyrics are
-**“love”**, **“time”**, and **“baby”**. Although these results were
-expected as she often writes about love and relationships, it was still
-interesting to look at it from a quantitative perspective.
+**“love”**, **“time”**, **“yeah”**, and **“baby”**. Although these
+results were expected as she often writes about love and relationships,
+it was still interesting to look at it from a quantitative perspective.
 
 Musical sound effects such as **“ooh”** and **“la”** were also common.
 The sound effect **“di”** appears 54 times from a single song: *I Did
@@ -431,9 +448,9 @@ alternative albums. The words **“grow”**, **“trouble”**, and
 **“daylight”** describe the themes of the albums *Speak Now*, *Red*, and
 *Lover*, respectively, based on their TF-IDF values.
 
-When it comes to lexical diversity, her vocabulary began to vary more since
+When it comes lexical diversity, her vocabulary began to vary more since
 her first album in 2006 but decreased when she transitioned into pop
-music. Since her 6th album, *reputation* (2017), there has been an
+music. Since her 6th album, *reputation* in 2017, there has been an
 upward trend in lexical diversity.
 
 Time of the day was a common theme in Swift’s lyrics, with words such as
@@ -442,6 +459,6 @@ throughout her albums. I think it would be interesting to see how
 frequent a specific theme of words (e.g., colors) appears in her lyrics.
 It would also be interesting to see how other features of her music,
 such as the Spotify features, are associated with these results. For
-example, is there a relationship between a song’s popularity and lexical
+example, is there a relationship between a song’s length and lexical
 diversity? Merging the Spotify features with the lyrics dataset could
 lead into more insights to her music.
