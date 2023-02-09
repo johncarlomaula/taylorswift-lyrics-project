@@ -11,6 +11,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Since retrieving the data using the genius library was returning incomplete lyrics, I decided to use a dataset, which I found [here](https://github.com/shaynak/taylor-swift-lyrics), that contains Taylor Swift lyrics. This section will focus on preparing that dataset for analysis, as well as addressing any other issues that occur such as missing lyrics. 
 
+**NOTE:** Updated on 02/08/23 to include lyrics from Taylor's new album, *Midnights*. 
+
 ### 1.1 Loading Packages
 
 These are the packages I used for this section of the project.
@@ -51,7 +53,7 @@ str(lyrics)
 ```
 
 ```{r echo = TRUE, warning = FALSE, message=FALSE}
-# Remove the last three columns
+# Subset dataframe to contain only the song, album, and lyrics columns.
 lyrics <- subset(lyrics, select = c("Song", "Album", "Lyric"))
 ```
 
@@ -61,7 +63,7 @@ Looking at the list of albums, there are 24 different album titles included in t
 
 ```{r echo = TRUE, warning = FALSE, message=FALSE}
 # View list of albums
-levels(lyrics$Album)
+unique(lyrics$Album)
 ```
 
 ```{r echo = TRUE, warning = FALSE, message=FALSE}
@@ -99,11 +101,16 @@ album.lyrics <- filter(lyrics, Album %in% albums) %>% droplevels()
 ```
 
 ```{r echo = TRUE, warning = FALSE, message=FALSE}
-# Verify 
+# Check filtered lyrics
 str(album.lyrics)
 ```
 
-There should be a total of 150 unique songs in the dataset. However, there are extra versions of songs that are included in the dataset (e.g., *Teardrops on My Guitar (Pop Version)*). Since these versions are usually indicated by an identifier in parenthesis, I decided to list all the songs that contain parenthesis in the title to identify the extra tracks to remove.
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Verify the number of songs in each album
+aggregate(data = lyrics, Song ~ Album, function(Song) length(unique(Song)))
+```
+
+Excluding *Untouchable* from *Fearless* since it is a cover, there should be a total of 150 songs in the dataset. However, there are alternative versions of songs included in the dataset such as *Teardrops on My Guitar (Pop Version)*. Since these versions are usually indicated by an identifier in parenthesis, I decided to list all the songs that contain parenthesis in the title to determine which tracks to remove.
 
 ```{r echo = TRUE, warning = FALSE, message=FALSE}
 # List songs containing parenthesis in the title
@@ -120,14 +127,14 @@ album.lyrics <- album.lyrics[(album.lyrics$Song != "Teardrops on My Guitar (Pop 
                    (album.lyrics$Song != "State of Grace (Acoustic Version)"), ] %>% droplevels()
 ```
 
-After removing the extra versions of standard songs, there are a total of 146 songs remaining. Thus, there are a total of 4 missing songs in the dataset. Fortunately, they were already identified by the person who originally scraped the lyrics. 
-
-The missing songs, which all belong to Taylor Swift's self-titled album, are:
+After removing the extra versions of standard songs, there are a total of 146 songs remaining. Thus, there are a total of 4 missing songs in the dataset. Fortunately, they were already identified by the person who originally scraped the lyrics:
 
 1. Picture To Burn
 2. Cold As You
 3. Tied Together With A Smile
 4. I'm Only Me When I'm With You
+
+These 4 songs are from her self-titled album. Below, I confirmed that these are the 4 missing songs in the dataset.
 
 ```{r echo = TRUE, warning = FALSE, message=FALSE}
 # List songs in the self-titled album
@@ -166,7 +173,51 @@ only.me$Album <- "Taylor Swift"
 complete.album.lyrics <- rbind(album.lyrics, picture.to.burn, cold.as.you, tied.together, only.me)
 ```
 
-### 2.5 Special Characters & Contractions
+### 2.5 Adding Midnights Lyrics
+
+On October 21, 2022, Taylor Swift released her 10th studio album, *Midnights*. The repository from which I retrieved the data has since been updated to include these new lyrics. In this section, I will be appending the new lyrics to the existing dataset.
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Import updated lyrics data
+lyrics.new <- read.csv("data/lyrics_v2.csv")
+
+# Check data structure
+str(lyrics.new)
+```
+
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Subset dataframe to contain only the song, album, and lyrics columns.
+lyrics.new <- subset(lyrics.new, select = c("Song", "Album", "Lyric"))
+
+# Change album column to a factor variable
+lyrics.new$Album <- factor(lyrics.new$Album)
+
+# View list of albums
+levels(lyrics.new$Album)
+```
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Remove deluxe identifiers from the Midnights album name
+lyrics.new$Album <- gsub(" \\(3am Edition\\)", "", lyrics.new$Album)
+lyrics.new$Album <- gsub(" \\(Target Exclusive\\)", "", lyrics.new$Album)
+
+# Filter Midnights lyrics
+lyrics.midnights <- lyrics.new[lyrics.new$Album == "Midnights",]
+
+# Preview Midnights lyrics dataframe
+head(lyrics.midnights)
+
+# Verify songs in Midnights album
+levels(factor(lyrics.midnights$Song))
+```
+
+```{r echo = TRUE, warning = FALSE, message=FALSE}
+# Append midnight lyrics to old lyrics
+complete.album.lyrics <- rbind(complete.album.lyrics, lyrics.midnights)
+```
+
+### 2.6 Special Characters & Contractions
 
 Using a [tutorial](https://www.datacamp.com/community/tutorials/R-nlp-machine-learning) from DataCamp, I defined a function that will fix contractions and remove special characters. Then, I applied these functions to the dataset and stored it into a csv file.
 
