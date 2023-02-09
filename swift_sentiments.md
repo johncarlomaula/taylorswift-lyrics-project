@@ -10,12 +10,8 @@ can be accessed [here](https://www.tidytextmining.com/sentiment.html). I
 will be using three different lexicons, **Bing**, **NRC**, and
 **AFINN**, to analyze the sentiment of Taylor’s music.
 
-**Key Findings**:
-- The Bing lexicon showed that her lyrics convey a more positive sentiment with words such as "like", "love", and "right" occuring frequently.
-- Words that contributed most to the negative sentiment of her lyrics are "bad", "shake", and "break".
-- The AFINN lexicon also showed that her lyrics convey a more positive sentiment with a positive mean AFINN value of 0.395.
-- Both *folklore* and *evermore* have a negative mean AFINN value of -0.052 and -0.043, respectively, while *Red* had the highest mean AFINN value of 0.632.
-- According to the NRC lexicon, the most common emotions conveyed by her lyrics are positive, negative, joy, and anticipation while the least common is disgust. This is generally consistent throughout her albums with some minor differences.
+**Notes:** Updated on 02/09/2023 to include Taylor’s new album,
+*Midnights*
 
 ### 1.1 Loading Packages
 
@@ -28,11 +24,12 @@ library(tidyverse)
 library(ggplot2)
 library(RColorBrewer)
 library(gridExtra)
+library(textdata)
 ```
 
 ### 1.2 Importing Data
 
-I imported and previewed the data from *swiftLyrics\_v2.csv*.
+I imported and previewed the data from *swiftLyrics_v2.csv*.
 
 ``` r
 # Importing the data
@@ -86,10 +83,10 @@ of each album.
 
 ``` r
 # Define vector of album titles
-album.list <- factor(c("Taylor Swift", "Fearless", "Speak Now", "Red", "1989", "reputation", "Lover", "folklore", "evermore"))
+album.list <- factor(c("Taylor Swift", "Fearless", "Speak Now", "Red", "1989", "reputation", "Lover", "folklore", "evermore", "Midnights"))
 
 # Define vector of color hex codes associated with each album aesthetic
-colors = c("#366E84", "#D9C78F", "#462245", "#A02B48", "#CDC6AC", "#333333", "#CC6B96", "#BABABA", "#67230E")
+colors = c("#366E84", "#D9C78F", "#462245", "#A02B48", "#CDC6AC", "#333333", "#CC6B96", "#BABABA", "#67230E", "#154E52")
 ```
 
 ## 2. Sentimental Analysis
@@ -144,19 +141,19 @@ p2 <- ggplot(neg.counts, aes(reorder(word, n), n)) +
 grid.arrange(p1, p2, ncol=2)
 ```
 
-![](images/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](swift_sentiments_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 According to the bing lexicon, words that contribute most to the
 positive sentiment of Taylor Swift’s lyrics are **“like”**, **“love”**,
 **“right”**, and **“good”**. Words that contribute most to the negative
-sentiment are **“bad”**, **“shake”**, **“break”**, and **“fall”**. There
-are significantly more occurrences of positive words than negatve words,
-with the top 3 positive words occurring 389, 233, and 115 times while
-the the top negative word occurs only 71 times.
+sentiment are **“bad”**, **“break”**, **“shake”**, and **“lost”**. There
+are significantly more occurrences of positive words than negative
+words, with the top 3 positive words occurring 440, 251, and 124 times
+while the the top negative word occurs only 74 times.
 
-It’s also interesting to note that the word **“shake”** appears the most
-frequent in her song *Shake It Off*, which is a positive, empowering
-song.
+It’s also interesting that the word **“shake”**, which has a negative
+association, appears the most frequently in her song *Shake It Off*,
+which is a positive, empowering song.
 
 ### 2.2 Positive vs. Negative Sentiment using the AFINN Lexicon
 
@@ -188,7 +185,7 @@ head(words_afinn)
 mean(words_afinn$value)
 ```
 
-    ## [1] 0.3951881
+    ## [1] 0.3761092
 
 ``` r
 # Plot the distribution of AFINN values in Taylor's music
@@ -200,15 +197,15 @@ ggplot(words_afinn, aes(value)) +
   theme_classic()
 ```
 
-![](image/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](swift_sentiments_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 Unsurprisingly, there are a lot more words with positive AFINN values in
 Taylor’s lyrics than words with negative values with a mean AFINN value
-of 0.395.
+of 0.376.
 
 ``` r
 # Plot the distribution of AFINN values per album
-for (i in 1:9) {
+for (i in 1:10) {
   p <- ggplot(words_afinn[words_afinn$Album == album.list[i], ], aes(value)) +
     geom_bar(fill = colors[i], color = "black") + 
     xlab("AFINN Value") + 
@@ -220,7 +217,7 @@ for (i in 1:9) {
 }
 ```
 
-<img src="images/figure-gfm/unnamed-chunk-9-1.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-2.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-3.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-4.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-5.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-6.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-7.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-8.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-9-9.png" width="50%" />
+<img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-1.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-2.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-3.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-4.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-5.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-6.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-7.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-8.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-9.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-9-10.png" width="50%" />
 
 When it comes to individual albums, both *folklore* and *evermore* have
 more words with negative AFINN values with mean values of -0.052 and
@@ -232,18 +229,19 @@ album about tumultuous emotions. It has a mean AFINN value of 0.632.
 words_afinn %>% group_by(Album) %>% summarize(mean_afinn_value = mean(value))
 ```
 
-    ## # A tibble: 9 × 2
-    ##   Album        mean_afinn_value
-    ##   <fct>                   <dbl>
-    ## 1 1989                   0.5   
-    ## 2 evermore              -0.0431
-    ## 3 Fearless               0.515 
-    ## 4 folklore              -0.0520
-    ## 5 Lover                  0.482 
-    ## 6 Red                    0.632 
-    ## 7 reputation             0.452 
-    ## 8 Speak Now              0.393 
-    ## 9 Taylor Swift           0.546
+    ## # A tibble: 10 × 2
+    ##    Album        mean_afinn_value
+    ##    <chr>                   <dbl>
+    ##  1 1989                   0.5   
+    ##  2 Fearless               0.515 
+    ##  3 Lover                  0.482 
+    ##  4 Midnights              0.223 
+    ##  5 Red                    0.632 
+    ##  6 Speak Now              0.393 
+    ##  7 Taylor Swift           0.546 
+    ##  8 evermore              -0.0431
+    ##  9 folklore              -0.0520
+    ## 10 reputation             0.452
 
 ## 2.3 Emotion Association with the NRC Lexicon
 
@@ -285,18 +283,18 @@ ggplot(nrc_word_counts, aes(reorder(sentiment, -n), n)) +
   theme(axis.text=element_text(size=12), axis.title=element_text(size=12), axis.text.x = element_text(angle = 30))
 ```
 
-![](images/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](swift_sentiments_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-Accordng to the NRC lexicon, the most common emotions conveyed by
-Taylor’s lyrics are **positive**, **negative**, **joy**, and
-**anticipation**. The least common emotion is **disgust**.
+According to the NRC lexicon, the most common emotions conveyed by
+Taylor’s lyrics are **positive**, **negative**, and **joy**. The least
+common emotion is **disgust**.
 
 ``` r
 # Get nrc sentiment word counts by album
 nrc_album_word_counts <- words_nrc %>% count(Album, sentiment, sort = TRUE)
 
 # Plot AFINN Score per album
-for (i in 1:9) {
+for (i in 1:10) {
   p <- ggplot(nrc_album_word_counts[nrc_album_word_counts$Album == album.list[i], ], aes(reorder(sentiment, -n), n)) + 
     geom_col(aes(fill = sentiment)) + 
     xlab("Sentiment") + 
@@ -311,7 +309,7 @@ for (i in 1:9) {
 }
 ```
 
-<img src="images/figure-gfm/unnamed-chunk-13-1.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-2.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-3.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-4.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-5.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-6.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-7.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-8.png" width="50%" /><img src="images/figure-gfm/unnamed-chunk-13-9.png" width="50%" />
+<img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-1.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-2.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-3.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-4.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-5.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-6.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-7.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-8.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-9.png" width="50%" /><img src="swift_sentiments_files/figure-gfm/unnamed-chunk-13-10.png" width="50%" />
 
 When it comes to individual albums, the most common and least common
 emotions are generally consistent. There are, however, some slight
@@ -337,7 +335,7 @@ The NRC lexicon associated words into 8 different emotions. Overall, the
 most common emotions associated with her lyrics are positive, negative,
 joy, and anticipation while the least common emotion is disgust. This
 result generally stays consistent throughout her albums with some minor
-changes.
+differences.
 
 However, these lexicons are not always correct in their interpretation.
 For example, the song *Shake It Off* is full of negative words such as
